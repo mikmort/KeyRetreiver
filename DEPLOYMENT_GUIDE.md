@@ -76,6 +76,28 @@ const { config, loading, error } = useOpenAIConfig();
 
 ## Troubleshooting
 
+### Error: "Failed to retrieve OpenAI configuration"
+
+This error means the function can't access the required environment variables. Follow these steps:
+
+1. **Check Environment Variables**: Visit the diagnostics endpoint to see what's configured:
+   ```
+   https://mortongroupaicred-hugxh8drhqabbphb.canadacentral-01.azurewebsites.net/api/diagnostics
+   ```
+
+2. **Verify Required Settings**: In Azure Portal → Function App → Configuration, ensure these are set:
+   - `AZURE_OPENAI_ENDPOINT` = your actual Azure OpenAI endpoint
+   - `AZURE_OPENAI_API_KEY` = your actual API key
+   - `FUNCTIONS_WORKER_RUNTIME` = node
+
+3. **Common Issues**:
+   - Missing environment variables (most common cause)
+   - Incorrect Azure OpenAI endpoint format
+   - Invalid API key
+   - Function app not restarted after configuration changes
+
+### Other Common Issues:
+
 1. **CORS Issues**: Make sure your React app's domain is in the ALLOWED_ORIGINS setting
 2. **404 Errors**: Ensure the GitHub Actions deployment completed successfully
 3. **Authentication Errors**: Check that your Azure OpenAI endpoint and API key are correct
