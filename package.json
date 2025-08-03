@@ -1,0 +1,22 @@
+{
+  "name": "key-retreiver",
+  "version": "1.0.0",
+  "description": "Azure Function to provide secrets for React app to connect to Azure OpenAI",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "prestart": "npm run build",
+    "start": "func start",
+    "test": "echo \"No tests yet\""
+  },
+  "dependencies": {
+    "@azure/functions": "^4.0.0",
+    "@azure/keyvault-secrets": "^4.7.0",
+    "@azure/identity": "^4.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  },
+  "main": "dist/src/functions/*.js"
+}
