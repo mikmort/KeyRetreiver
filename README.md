@@ -4,7 +4,8 @@ This Azure Function provides a secure way to retrieve Azure OpenAI secrets for y
 
 ## Features
 
-- ✅ Secure secret retrieval from Azure Key Vault
+- ✅ **OpenAI Proxy**: Secure proxy for Azure OpenAI API calls
+- ✅ **Secret Management**: Secure secret retrieval from Azure Key Vault
 - ✅ Fallback to environment variables for local development
 - ✅ CORS support for React applications
 - ✅ TypeScript support
@@ -17,19 +18,23 @@ This Azure Function provides a secure way to retrieve Azure OpenAI secrets for y
 KeyRetriever/
 ├── src/
 │   ├── functions/
-│   │   └── getOpenAISecrets.ts    # Main Azure Function
+│   │   ├── getOpenAISecrets.ts      # Get OpenAI credentials (legacy)
+│   │   ├── openaiProxy.ts           # NEW: OpenAI API proxy
+│   │   └── diagnostics.ts           # Health check function
 │   ├── services/
-│   │   └── keyVaultService.ts     # Key Vault helper service
+│   │   ├── keyVaultService.ts       # Key Vault helper service
+│   │   └── openAIService.ts         # NEW: OpenAI API service
 │   └── types/
-│       └── index.ts               # TypeScript interfaces
+│       └── index.ts                 # TypeScript interfaces
 ├── examples/
-│   └── reactClient.tsx            # React client example
+│   ├── reactClient.tsx              # React client example (legacy)
+│   └── reactClientProxy.tsx         # NEW: React client for proxy
 ├── scripts/
-│   └── deploy.ps1                 # Deployment script
-├── host.json                      # Azure Functions host configuration
-├── local.settings.json            # Local development settings
-├── package.json                   # Node.js dependencies
-└── tsconfig.json                  # TypeScript configuration
+│   └── deploy.ps1                   # Deployment script
+├── host.json                        # Azure Functions host configuration
+├── local.settings.json              # Local development settings
+├── package.json                     # Node.js dependencies
+└── tsconfig.json                    # TypeScript configuration
 ```
 
 ## Setup Instructions
@@ -90,7 +95,53 @@ KeyRetriever/
 
 ## API Endpoints
 
-### GET /api/openai/config
+### POST /api/openai/chat/completions (NEW)
+
+**OpenAI Proxy Endpoint** - Makes Azure OpenAI API calls on behalf of your React app, keeping credentials secure.
+
+**Request Body**:
+```json
+{
+  "deployment": "gpt-35-turbo",
+  "messages": [
+    { "role": "user", "content": "Hello, world!" }
+  ],
+  "max_tokens": 150,
+  "temperature": 0.7
+}
+```
+
+**Response**:
+```json
+{
+  "success": true,
+  "data": {
+    "id": "chatcmpl-123",
+    "object": "chat.completion", 
+    "created": 1677652288,
+    "model": "gpt-35-turbo",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "Hello! How can I help you today?"
+        },
+        "finish_reason": "stop"
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 9,
+      "completion_tokens": 12,
+      "total_tokens": 21
+    }
+  }
+}
+```
+
+### GET /api/openai/config (Legacy)
+
+Returns the Azure OpenAI configuration for direct client usage. **Use the proxy endpoint above for better security.**
 
 Returns the Azure OpenAI configuration for your React app.
 
@@ -114,6 +165,38 @@ Returns the Azure OpenAI configuration for your React app.
 ```
 
 ## React Client Usage
+
+### Using the Proxy (Recommended)
+
+See `examples/reactClientProxy.tsx` for a complete example. Basic usage:
+
+```typescript
+import { useOpenAIProxy } from './useOpenAIProxy';
+
+function MyComponent() {
+  const { chatCompletion, loading, error } = useOpenAIProxy();
+  
+  const handleSendMessage = async () => {
+    const response = await chatCompletion({
+      deployment: 'gpt-35-turbo', // Your Azure OpenAI deployment name
+      messages: [{ role: 'user', content: 'Hello!' }],
+      max_tokens: 150,
+    });
+    
+    if (response) {
+      console.log(response.choices[0].message.content);
+    }
+  };
+  
+  return (
+    <button onClick={handleSendMessage} disabled={loading}>
+      {loading ? 'Sending...' : 'Send Message'}
+    </button>
+  );
+}
+```
+
+### Using Direct Credentials (Legacy)
 
 See `examples/reactClient.tsx` for a complete example. Basic usage:
 
@@ -144,6 +227,31 @@ function MyComponent() {
 
 ### Optional
 - `ALLOWED_ORIGINS`: Comma-separated list of allowed origins for CORS (default: "http://localhost:3000")
+
+**Note**: Both the proxy and legacy endpoints use the same configuration.
+
+## Why Use the Proxy?
+
+The OpenAI proxy function (`/api/openai/chat/completions`) provides several advantages over direct API calls:
+
+### 🔒 **Enhanced Security**
+- API keys never leave the Azure Function
+- No sensitive credentials in client-side code
+- Reduced risk of key exposure
+
+### 🎯 **Better Control** 
+- Centralized request/response logging
+- Easy to implement rate limiting
+- Request validation and sanitization
+
+### 🌐 **Simplified CORS**
+- CORS handled by Azure Function
+- No need for complex client-side configurations
+
+### 🔧 **Easier Maintenance**
+- Update API versions in one place
+- Centralized error handling
+- Simplified client code
 
 ## Security Considerations
 

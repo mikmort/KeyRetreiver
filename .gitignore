@@ -4,3 +4,4 @@ dist
 local.settings.json
 .env
 *.log
+test/validate-structure.js
