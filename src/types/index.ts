@@ -20,3 +20,41 @@ export interface SuccessResponse<T> {
     success: true;
     data: T;
 }
+
+// OpenAI API Types
+export interface ChatMessage {
+    role: 'system' | 'user' | 'assistant';
+    content: string;
+}
+
+export interface ChatCompletionRequest {
+    messages: ChatMessage[];
+    max_tokens?: number;
+    temperature?: number;
+    top_p?: number;
+    frequency_penalty?: number;
+    presence_penalty?: number;
+    stop?: string | string[];
+    stream?: boolean;
+}
+
+export interface ChatCompletionChoice {
+    index: number;
+    message: ChatMessage;
+    finish_reason: string;
+}
+
+export interface ChatCompletionUsage {
+    prompt_tokens: number;
+    completion_tokens: number;
+    total_tokens: number;
+}
+
+export interface ChatCompletionResponse {
+    id: string;
+    object: string;
+    created: number;
+    model: string;
+    choices: ChatCompletionChoice[];
+    usage: ChatCompletionUsage;
+}
