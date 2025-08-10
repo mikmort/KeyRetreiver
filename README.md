@@ -28,7 +28,10 @@ KeyRetriever/
 │       └── index.ts                 # TypeScript interfaces
 ├── examples/
 │   ├── reactClient.tsx              # React client example (legacy)
-│   └── reactClientProxy.tsx         # NEW: React client for proxy
+│   ├── reactClientProxy.tsx         # React client for proxy
+│   ├── reactClientWithAGGrid.tsx    # NEW: AG Grid example (fixes pagination warning)
+│   ├── package.json                 # Example dependencies
+│   └── README.md                    # Examples documentation
 ├── scripts/
 │   └── deploy.ps1                   # Deployment script
 ├── host.json                        # Azure Functions host configuration
@@ -213,6 +216,37 @@ function MyComponent() {
   return <div>Ready to use OpenAI!</div>;
 }
 ```
+
+### Using with AG Grid (Data Tables)
+
+See `examples/reactClientWithAGGrid.tsx` for a complete data table example that **fixes the AG Grid pagination warning**:
+
+```typescript
+import DataGridExample from './reactClientWithAGGrid';
+
+function App() {
+  return <DataGridExample />;
+}
+```
+
+**Key features:**
+- ✅ **Fixes AG Grid pagination warning** by ensuring `paginationPageSize` is in `paginationPageSizeSelector`
+- ✅ Integrated with KeyRetriever service for secure API access
+- ✅ Sample financial data table with sorting and filtering
+- ✅ Proper pagination configuration: `paginationPageSize: 20` with `paginationPageSizeSelector: [10, 20, 50, 100]`
+
+**Installation:**
+```bash
+npm install ag-grid-react ag-grid-community
+```
+
+**The AG Grid Warning Fix:**
+The example specifically resolves this warning:
+```
+AG Grid: The paginationPageSize grid option is set to a value that is not in the list of page size options.
+```
+
+See `examples/README.md` for detailed configuration options and troubleshooting.
 
 ## Environment Variables
 
