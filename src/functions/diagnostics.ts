@@ -1,4 +1,6 @@
 import { app, HttpRequest, HttpResponseInit, InvocationContext } from '@azure/functions';
+import { globalRateLimiter } from '../services/rateLimiter';
+import { openaiSemaphore } from '../services/concurrency';
 
 export async function diagnostics(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
     context.log('Diagnostics function called');
@@ -25,10 +27,21 @@ export async function diagnostics(request: HttpRequest, context: InvocationConte
                 AZURE_OPENAI_API_KEY: process.env.AZURE_OPENAI_API_KEY ? 'SET' : 'NOT SET',
                 KEY_VAULT_URL: process.env.KEY_VAULT_URL ? 'SET' : 'NOT SET',
                 FUNCTIONS_WORKER_RUNTIME: process.env.FUNCTIONS_WORKER_RUNTIME || 'NOT SET',
-                ALLOWED_ORIGINS: process.env.ALLOWED_ORIGINS || 'NOT SET'
+                ALLOWED_ORIGINS: process.env.ALLOWED_ORIGINS || 'NOT SET',
+                // Rate limiting configuration
+                RATE_LIMIT_GLOBAL_RPS: process.env.RATE_LIMIT_GLOBAL_RPS || '8 (default)',
+                RATE_LIMIT_USER_RPS: process.env.RATE_LIMIT_USER_RPS || '2 (default)',
+                // Concurrency configuration
+                MAX_PARALLEL_AOAI: process.env.MAX_PARALLEL_AOAI || '8 (default)',
+                // Retry configuration
+                AOAI_MAX_RETRIES: process.env.AOAI_MAX_RETRIES || '6 (default)',
+                AOAI_BASE_DELAY_MS: process.env.AOAI_BASE_DELAY_MS || '500 (default)',
+                AOAI_MAX_DELAY_MS: process.env.AOAI_MAX_DELAY_MS || '15000 (default)'
             },
             nodeVersion: process.version,
-            platform: process.platform
+            platform: process.platform,
+            rateLimiter: globalRateLimiter.getStatus(),
+            concurrency: openaiSemaphore.getStatus()
         };
 
         context.log('Diagnostic info:', diagnosticInfo);
