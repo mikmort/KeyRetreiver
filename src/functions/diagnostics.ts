@@ -36,7 +36,11 @@ export async function diagnostics(request: HttpRequest, context: InvocationConte
                 // Retry configuration
                 AOAI_MAX_RETRIES: process.env.AOAI_MAX_RETRIES || '6 (default)',
                 AOAI_BASE_DELAY_MS: process.env.AOAI_BASE_DELAY_MS || '500 (default)',
-                AOAI_MAX_DELAY_MS: process.env.AOAI_MAX_DELAY_MS || '15000 (default)'
+                AOAI_MAX_DELAY_MS: process.env.AOAI_MAX_DELAY_MS || '15000 (default)',
+                // Validation configuration
+                VALIDATION_MAX_MESSAGES: process.env.VALIDATION_MAX_MESSAGES || '50 (default)',
+                VALIDATION_MAX_MESSAGE_LENGTH: process.env.VALIDATION_MAX_MESSAGE_LENGTH || '4000 (default)',
+                VALIDATION_MAX_TOKENS: process.env.VALIDATION_MAX_TOKENS || '4000 (default)'
             },
             nodeVersion: process.version,
             platform: process.platform,
