@@ -12,13 +12,16 @@
     "resolveJsonModule": true,
     "types": ["node"],
     "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "jsx": "react",
+    "lib": ["es2018", "dom"]
   },
   "include": [
     "src/**/*"
   ],
   "exclude": [
     "node_modules",
-    "dist"
+    "dist",
+    "examples"
   ]
 }
