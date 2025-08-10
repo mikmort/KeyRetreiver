@@ -11,9 +11,9 @@ export interface ValidationResult {
 }
 
 export class RequestValidator {
-    private static readonly MAX_MESSAGES = 50;
-    private static readonly MAX_MESSAGE_LENGTH = 4000;
-    private static readonly MAX_TOKENS = 4000;
+    private static readonly MAX_MESSAGES = Number(process.env.VALIDATION_MAX_MESSAGES || 50);
+    private static readonly MAX_MESSAGE_LENGTH = Number(process.env.VALIDATION_MAX_MESSAGE_LENGTH || 4000);
+    private static readonly MAX_TOKENS = Number(process.env.VALIDATION_MAX_TOKENS || 4000);
 
     /**
      * Validate and sanitize a chat completion request
