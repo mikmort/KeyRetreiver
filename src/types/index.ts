@@ -58,3 +58,38 @@ export interface ChatCompletionResponse {
     choices: ChatCompletionChoice[];
     usage: ChatCompletionUsage;
 }
+
+// Accounting Types
+export interface Account {
+    id: string;
+    name: string;
+    initialBalance: number;
+    isActive: boolean;
+    createdDate: string;
+    currentBalance?: number; // Calculated field
+}
+
+export interface Transaction {
+    id: string;
+    accountId: string;
+    amount: number;
+    date: string;
+    description: string;
+    type: 'credit' | 'debit';
+}
+
+export interface AccountWithBalance extends Account {
+    currentBalance: number;
+}
+
+export interface AccountsResponse {
+    success: boolean;
+    data?: AccountWithBalance[];
+    error?: string;
+}
+
+export interface TransactionsResponse {
+    success: boolean;
+    data?: Transaction[];
+    error?: string;
+}
