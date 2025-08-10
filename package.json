@@ -11,8 +11,10 @@
   },
   "dependencies": {
     "@azure/functions": "^4.0.0",
+    "@azure/identity": "^4.0.1",
     "@azure/keyvault-secrets": "^4.7.0",
-    "@azure/identity": "^4.0.1"
+    "@types/uuid": "^10.0.0",
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
