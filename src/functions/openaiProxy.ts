@@ -297,6 +297,22 @@ export async function openaiProxy(request: HttpRequest, context: InvocationConte
         
         // Client errors from Azure OpenAI (400, 401, 403, 404)
         if (aoaiError.status && aoaiError.status >= 400 && aoaiError.status < 500) {
+            // Check if this is a content filtering error (400 with specific message pattern)
+            if (aoaiError.status === 400 && aoaiError.message?.includes('content management policy')) {
+                logger.warn('Content filtering detected', { requestId, error: aoaiError.message });
+                return {
+                    status: 400,
+                    headers: corsHeaders,
+                    body: JSON.stringify({
+                        success: false,
+                        error: 'Content filtered by Azure OpenAI policy',
+                        errorType: 'content_filter',
+                        detail: 'The request was filtered due to content policy. Consider skipping this transaction or marking it as uncategorized.'
+                    } as ApiResponse)
+                };
+            }
+            
+            // Other client errors (401, 403, 404, or 400 without content filtering)
             return {
                 status: 502,
                 headers: corsHeaders,
