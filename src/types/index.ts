@@ -9,6 +9,8 @@ export interface ApiResponse<T = any> {
     success: boolean;
     data?: T;
     error?: string;
+    errorType?: string;
+    detail?: string;
 }
 
 export interface ErrorResponse {
