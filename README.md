@@ -8,7 +8,7 @@ This Azure Function provides a secure way to retrieve Azure OpenAI secrets for y
 - ✅ **Secret Management**: Secure secret retrieval from Azure Key Vault 
 - ✅ Fallback to environment variables for local development
 - ✅ CORS support for React applications
-- ✅ TypeScript support
+- ✅ TypeScript support 
 - ✅ Error handling and logging
 - ✅ Managed identity authentication
 
