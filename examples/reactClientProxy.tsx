@@ -90,7 +90,7 @@ export function useOpenAIProxy() {
 export function ChatComponent() {
     const [messages, setMessages] = useState<ChatMessage[]>([]);
     const [input, setInput] = useState('');
-    const [deployment, setDeployment] = useState('gpt-35-turbo'); // Default deployment name
+    const [deployment, setDeployment] = useState('gpt-4o-mini'); // Default deployment name
     const { chatCompletion, loading, error } = useOpenAIProxy();
 
     const sendMessage = async () => {
@@ -127,7 +127,7 @@ export function ChatComponent() {
                     type="text"
                     value={deployment}
                     onChange={(e) => setDeployment(e.target.value)}
-                    placeholder="e.g., gpt-35-turbo, gpt-4"
+                    placeholder="e.g., gpt-35-turbo, gpt-4, gpt-4o-mini, gpt-5-chat"
                     style={{ marginLeft: '10px', padding: '5px' }}
                 />
             </div>
@@ -215,7 +215,7 @@ export function SimpleOpenAIExample() {
 
     const askQuestion = async () => {
         const result = await chatCompletion({
-            deployment: 'gpt-35-turbo', // Replace with your deployment name
+            deployment: 'gpt-4o-mini', // Replace with your deployment name
             messages: [
                 { role: 'user', content: 'What is the capital of France?' }
             ],

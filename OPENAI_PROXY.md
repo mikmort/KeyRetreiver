@@ -74,6 +74,38 @@ x-user-id: optional-user-identifier
 }
 ```
 
+## Supported Deployments
+
+The proxy supports any Azure OpenAI deployment name. Common examples include:
+
+```typescript
+// GPT-4 models
+{
+  "deployment": "gpt-4",
+  "messages": [{"role": "user", "content": "Hello"}]
+}
+
+// GPT-4 Omni Mini (cost-efficient)
+{
+  "deployment": "gpt-4o-mini", 
+  "messages": [{"role": "user", "content": "Hello"}]
+}
+
+// GPT-5 Chat (latest model)
+{
+  "deployment": "gpt-5-chat",
+  "messages": [{"role": "user", "content": "Hello"}]
+}
+
+// Legacy GPT-3.5 Turbo
+{
+  "deployment": "gpt-35-turbo",
+  "messages": [{"role": "user", "content": "Hello"}]
+}
+```
+
+> **Note**: The actual deployment names depend on how you've named your deployments in Azure OpenAI Studio. These are examples of common deployment naming patterns.
+
 ## Response Format
 
 ### Success Response
@@ -84,7 +116,7 @@ x-user-id: optional-user-identifier
     "id": "chatcmpl-123",
     "object": "chat.completion",
     "created": 1677652288,
-    "model": "gpt-35-turbo",
+    "model": "gpt-5-chat",
     "choices": [
       {
         "index": 0,
@@ -176,7 +208,7 @@ export function useOpenAIProxy() {
   
   const chatCompletion = async (
     messages: ChatMessage[], 
-    deployment: string = 'gpt-35-turbo',
+    deployment: string = 'gpt-4o-mini',
     userId?: string
   ) => {
     setLoading(true);
@@ -233,7 +265,7 @@ async function callOpenAI(message, maxRetries = 3) {
           'x-user-id': 'your-user-id', // For rate limiting
         },
         body: JSON.stringify({
-          deployment: 'gpt-35-turbo',
+          deployment: 'gpt-5-chat',
           messages: [
             { role: 'user', content: message }
           ],
