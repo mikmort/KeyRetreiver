@@ -5,7 +5,7 @@ This Azure Function provides a secure way to retrieve Azure OpenAI secrets for y
 ## Features
 
 - ✅ **OpenAI Proxy**: Secure proxy for Azure OpenAI API calls
-- ✅ **Secret Management**: Secure secret retrieval from Azure Key Vault
+- ✅ **Secret Management**: Secure secret retrieval from Azure Key Vault 
 - ✅ Fallback to environment variables for local development
 - ✅ CORS support for React applications
 - ✅ TypeScript support
