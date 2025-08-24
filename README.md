@@ -102,7 +102,7 @@ KeyRetriever/
 **Request Body**:
 ```json
 {
-  "deployment": "gpt-35-turbo",
+  "deployment": "gpt-4o-mini",
   "messages": [
     { "role": "user", "content": "Hello, world!" }
   ],
@@ -119,7 +119,7 @@ KeyRetriever/
     "id": "chatcmpl-123",
     "object": "chat.completion", 
     "created": 1677652288,
-    "model": "gpt-35-turbo",
+    "model": "gpt-4o-mini",
     "choices": [
       {
         "index": 0,
@@ -138,6 +138,8 @@ KeyRetriever/
   }
 }
 ```
+
+**Supported Deployments**: The proxy supports any Azure OpenAI deployment name including `gpt-4`, `gpt-4o-mini`, `gpt-5-chat`, and `gpt-35-turbo`. Use the deployment name as configured in your Azure OpenAI Studio.
 
 ### GET /api/openai/config (Legacy)
 
@@ -178,7 +180,7 @@ function MyComponent() {
   
   const handleSendMessage = async () => {
     const response = await chatCompletion({
-      deployment: 'gpt-35-turbo', // Your Azure OpenAI deployment name
+      deployment: 'gpt-4o-mini', // Your Azure OpenAI deployment name
       messages: [{ role: 'user', content: 'Hello!' }],
       max_tokens: 150,
     });
