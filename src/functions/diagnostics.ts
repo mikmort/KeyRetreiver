@@ -40,7 +40,12 @@ export async function diagnostics(request: HttpRequest, context: InvocationConte
                 // Validation configuration
                 VALIDATION_MAX_MESSAGES: process.env.VALIDATION_MAX_MESSAGES || '50 (default)',
                 VALIDATION_MAX_MESSAGE_LENGTH: process.env.VALIDATION_MAX_MESSAGE_LENGTH || '4000 (default)',
-                VALIDATION_MAX_TOKENS: process.env.VALIDATION_MAX_TOKENS || '4000 (default)'
+                VALIDATION_MAX_TOKENS: process.env.VALIDATION_MAX_TOKENS || '4000 (default)',
+                // Blob Storage configuration
+                AZURE_STORAGE_CONNECTION_STRING: process.env.AZURE_STORAGE_CONNECTION_STRING ? 'SET' : 'NOT SET',
+                AZURE_STORAGE_ACCOUNT_NAME: process.env.AZURE_STORAGE_ACCOUNT_NAME ? 'SET' : 'NOT SET',
+                AZURE_STORAGE_ACCOUNT_KEY: process.env.AZURE_STORAGE_ACCOUNT_KEY ? 'SET' : 'NOT SET',
+                AZURE_BLOB_CONTAINER_NAME: process.env.AZURE_BLOB_CONTAINER_NAME || 'documents (default)'
             },
             nodeVersion: process.version,
             platform: process.platform,
