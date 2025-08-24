@@ -60,3 +60,44 @@ export interface ChatCompletionResponse {
     choices: ChatCompletionChoice[];
     usage: ChatCompletionUsage;
 }
+
+// Azure Blob Storage Types
+export interface BlobStorageConfig {
+    connectionString?: string;
+    accountName?: string;
+    accountKey?: string;
+    containerName: string;
+}
+
+export interface BlobUploadRequest {
+    blobName: string;
+    content: string;
+    contentType?: string;
+    metadata?: { [key: string]: string };
+}
+
+export interface BlobDownloadResponse {
+    blobName: string;
+    content: string;
+    contentType: string;
+    contentLength: number;
+    lastModified: Date;
+    etag: string;
+    metadata?: { [key: string]: string };
+}
+
+export interface BlobListItem {
+    name: string;
+    contentLength: number;
+    lastModified: Date;
+    etag: string;
+    contentType: string;
+}
+
+export interface BlobOperationResult {
+    blobName: string;
+    success: boolean;
+    etag?: string;
+    lastModified?: Date;
+    url?: string;
+}
