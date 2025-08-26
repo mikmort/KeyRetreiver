@@ -10,17 +10,18 @@ on:
   workflow_dispatch:
 
 env:
-  AZURE_FUNCTIONAPP_PACKAGE_PATH: '.' # set this to the path to your web app project, defaults to the repository root
-  NODE_VERSION: '20.x' # set this to the node version to use (supports 8.x, 10.x, 12.x)
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: '.' # path to your Function App project, defaults to repo root
+  NODE_VERSION: '20.x'
 
 jobs:
-  build:
+  build_and_deploy:
     runs-on: windows-latest
     permissions:
-      contents: read #This is required for actions/checkout
-      
+      id-token: write   # needed for azure/login
+      contents: read    # needed for checkout
+
     steps:
-      - name: 'Checkout GitHub Action'
+      - name: Checkout
         uses: actions/checkout@v4
 
       - name: Setup Node ${{ env.NODE_VERSION }} Environment
@@ -28,7 +29,7 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
-      - name: 'Resolve Project Dependencies Using Npm'
+      - name: Install, Build, Test
         shell: pwsh
         run: |
           pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
@@ -37,25 +38,6 @@ jobs:
           npm run test --if-present
           popd
 
-      - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v4
-        with:
-          name: node-app
-          path: .
-
-  deploy:
-    runs-on: windows-latest
-    needs: build
-    permissions:
-      id-token: write #This is required for requesting the JWT
-      contents: read #This is required for actions/checkout
-
-    steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v4
-        with:
-          name: node-app
-      
       - name: Login to Azure
         uses: azure/login@v2
         with:
@@ -63,11 +45,9 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_47EC673F6136437E8EF1AB822D2F2B8E }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_5D1DCC5B02F04EE481E19295805B6E59 }}
 
-      - name: 'Run Azure Functions Action'
+      - name: Deploy to Azure Function App
         uses: Azure/functions-action@v1
-        id: fa
         with:
           app-name: 'StorageProxy'
           slot-name: 'Production'
           package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
-          
