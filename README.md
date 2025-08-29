@@ -6,6 +6,7 @@ This Azure Function provides a secure way to retrieve Azure OpenAI secrets for y
 
 - ✅ **OpenAI Proxy**: Secure proxy for Azure OpenAI API calls
 - ✅ **Secret Management**: Secure secret retrieval from Azure Key Vault
+- ✅ **Azure Static Web App Authentication**: Microsoft Authentication (MSA) support
 - ✅ Fallback to environment variables for local development
 - ✅ CORS support for React applications
 - ✅ TypeScript support 
@@ -28,9 +29,12 @@ KeyRetriever/
 │       └── index.ts                 # TypeScript interfaces
 ├── examples/
 │   ├── reactClient.tsx              # React client example (legacy)
-│   └── reactClientProxy.tsx         # NEW: React client for proxy
+│   ├── reactClientProxy.tsx         # NEW: React client for proxy
+│   └── reactClientAuthenticated.tsx # NEW: Authenticated React client
 ├── scripts/
 │   └── deploy.ps1                   # Deployment script
+├── staticwebapp.config.json         # NEW: Azure Static Web App auth config
+├── STATIC_WEB_APP_AUTH.md          # NEW: Authentication setup guide
 ├── host.json                        # Azure Functions host configuration
 ├── local.settings.json              # Local development settings
 ├── package.json                     # Node.js dependencies
@@ -261,6 +265,18 @@ The OpenAI proxy function (`/api/openai/chat/completions`) provides several adva
 - CORS is configured to only allow specified origins
 - API keys are never logged or exposed in error messages
 - The function supports both development (env vars) and production (Key Vault) scenarios
+- **Azure Static Web App Authentication**: Microsoft Authentication (MSA) is configured via `staticwebapp.config.json`
+
+## Azure Static Web App Authentication
+
+If you're using this with an Azure Static Web App, see **[STATIC_WEB_APP_AUTH.md](STATIC_WEB_APP_AUTH.md)** for complete authentication setup including:
+
+- Microsoft Authentication (MSA) configuration
+- Azure AD app registration setup
+- CORS configuration for authenticated requests
+- React integration examples
+
+The repository includes a pre-configured `staticwebapp.config.json` for the Static Web App at `https://gentle-moss-087d9321e.1.azurestaticapps.net/`.
 
 ## Troubleshooting
 

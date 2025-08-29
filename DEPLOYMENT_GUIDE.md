@@ -19,7 +19,7 @@ FUNCTIONS_WORKER_RUNTIME = node
 WEBSITE_NODE_DEFAULT_VERSION = ~18
 AZURE_OPENAI_ENDPOINT = https://your-openai-instance.openai.azure.com/
 AZURE_OPENAI_API_KEY = your-actual-api-key
-ALLOWED_ORIGINS = http://localhost:3000,https://your-react-app-domain.com
+ALLOWED_ORIGINS = http://localhost:3000,https://gentle-moss-087d9321e.1.azurestaticapps.net
 ```
 
 ### Optional Settings (for Key Vault - Production):

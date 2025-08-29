@@ -29,7 +29,7 @@ az functionapp config appsettings set --name $functionAppName --resource-group $
     KEY_VAULT_URL = "https://$keyVaultName.vault.azure.net/"
     AZURE_OPENAI_ENDPOINT = "https://your-openai-instance.openai.azure.com/"
     AZURE_OPENAI_API_KEY_SECRET_NAME = "azure-openai-api-key"
-    ALLOWED_ORIGINS = "https://your-react-app.com,http://localhost:3000"
+    ALLOWED_ORIGINS = "https://gentle-moss-087d9321e.1.azurestaticapps.net,http://localhost:3000"
 } | ConvertTo-Json)
 
 # Enable system-assigned managed identity
