@@ -1,5 +1,14 @@
 # Azure Blob Storage Proxy Function
 
+## Deployment Information
+
+**StorageProxy Function App**: 
+- **URL**: https://storageproxy-c6g8bvbcdqc7duam.canadacentral-01.azurewebsites.net
+- **Purpose**: Blob storage operations (upload, download, delete, list)
+- **API Base**: https://storageproxy-c6g8bvbcdqc7duam.canadacentral-01.azurewebsites.net/api/blob
+
+**Note**: This is different from the MortonGroupAICred function app which handles OpenAI credentials.
+
 ## Overview
 
 The Azure Blob Storage proxy function (`/api/blob/{*path}`) provides secure access to Azure Blob Storage operations for React applications. It supports creating, updating, downloading, deleting, and listing blobs without exposing storage credentials to the client.
@@ -23,7 +32,7 @@ The Azure Blob Storage proxy function (`/api/blob/{*path}`) provides secure acce
 
 **Example**:
 ```bash
-curl -X POST "https://your-function-app.azurewebsites.net/api/blob/upload/documents/file.txt" \
+curl -X POST "https://storageproxy-c6g8bvbcdqc7duam.canadacentral-01.azurewebsites.net/api/blob/upload/documents/file.txt" \
   -H "Content-Type: text/plain" \
   -H "x-metadata-author: john" \
   -d "Hello, this is the file content!"
@@ -35,7 +44,7 @@ curl -X POST "https://your-function-app.azurewebsites.net/api/blob/upload/docume
 
 **Example**:
 ```bash
-curl "https://your-function-app.azurewebsites.net/api/blob/download/documents/file.txt"
+curl "https://storageproxy-c6g8bvbcdqc7duam.canadacentral-01.azurewebsites.net/api/blob/download/documents/file.txt"
 ```
 
 ### 3. Delete Blob
@@ -44,7 +53,7 @@ curl "https://your-function-app.azurewebsites.net/api/blob/download/documents/fi
 
 **Example**:
 ```bash
-curl -X DELETE "https://your-function-app.azurewebsites.net/api/blob/delete/documents/file.txt"
+curl -X DELETE "https://storageproxy-c6g8bvbcdqc7duam.canadacentral-01.azurewebsites.net/api/blob/delete/documents/file.txt"
 ```
 
 ### 4. List Blobs
@@ -54,10 +63,10 @@ curl -X DELETE "https://your-function-app.azurewebsites.net/api/blob/delete/docu
 **Example**:
 ```bash
 # List all blobs
-curl "https://your-function-app.azurewebsites.net/api/blob/list"
+curl "https://storageproxy-c6g8bvbcdqc7duam.canadacentral-01.azurewebsites.net/api/blob/list"
 
 # List blobs with prefix
-curl "https://your-function-app.azurewebsites.net/api/blob/list?prefix=documents/"
+curl "https://storageproxy-c6g8bvbcdqc7duam.canadacentral-01.azurewebsites.net/api/blob/list?prefix=documents/"
 ```
 
 ## Environment Variables
@@ -136,7 +145,7 @@ function MyComponent() {
 Set your Azure Function URL:
 ```bash
 # .env file in your React app
-REACT_APP_AZURE_FUNCTION_URL=https://your-function-app.azurewebsites.net
+REACT_APP_AZURE_FUNCTION_URL=https://storageproxy-c6g8bvbcdqc7duam.canadacentral-01.azurewebsites.net
 ```
 
 ## Response Format

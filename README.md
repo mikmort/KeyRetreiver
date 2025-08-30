@@ -5,6 +5,7 @@ This Azure Function provides a secure way to retrieve Azure OpenAI secrets for y
 ## Features
 
 - ✅ **OpenAI Proxy**: Secure proxy for Azure OpenAI API calls
+- ✅ **Blob Storage Proxy**: Secure proxy for Azure Blob Storage operations  
 - ✅ **Secret Management**: Secure secret retrieval from Azure Key Vault
 - ✅ Fallback to environment variables for local development
 - ✅ CORS support for React applications
@@ -12,29 +13,44 @@ This Azure Function provides a secure way to retrieve Azure OpenAI secrets for y
 - ✅ Error handling and logging
 - ✅ Managed identity authentication
 
+## Deployed Function Apps
+
+This repository contains multiple Azure Function apps for different purposes:
+
+| Function App | Endpoint | Purpose |
+|-------------|----------|----------|
+| **MortonGroupAICred** | [mortongroupaicred-hugxh8drhqabbphb.canadacentral-01.azurewebsites.net](https://mortongroupaicred-hugxh8drhqabbphb.canadacentral-01.azurewebsites.net) | OpenAI credentials and proxy |
+| **StorageProxy** | [storageproxy-c6g8bvbcdqc7duam.canadacentral-01.azurewebsites.net](https://storageproxy-c6g8bvbcdqc7duam.canadacentral-01.azurewebsites.net) | Blob storage operations |
+
 ## Project Structure
 
 ```
 KeyRetriever/
 ├── src/
 │   ├── functions/
-│   │   ├── getOpenAISecrets.ts      # Get OpenAI credentials (legacy)
-│   │   ├── openaiProxy.ts           # NEW: OpenAI API proxy
-│   │   └── diagnostics.ts           # Health check function
+│   │   ├── getOpenAISecrets.ts        # Get OpenAI credentials (legacy)
+│   │   ├── openaiProxy.ts             # OpenAI API proxy
+│   │   ├── blobProxy.ts               # NEW: Blob storage proxy 
+│   │   └── diagnostics.ts             # Health check function
 │   ├── services/
-│   │   ├── keyVaultService.ts       # Key Vault helper service
-│   │   └── openAIService.ts         # NEW: OpenAI API service
+│   │   ├── keyVaultService.ts         # Key Vault helper service
+│   │   ├── openAIService.ts           # OpenAI API service
+│   │   └── blobStorageService.ts      # NEW: Blob storage service
 │   └── types/
-│       └── index.ts                 # TypeScript interfaces
+│       └── index.ts                   # TypeScript interfaces
 ├── examples/
-│   ├── reactClient.tsx              # React client example (legacy)
-│   └── reactClientProxy.tsx         # NEW: React client for proxy
+│   ├── reactClient.tsx                # React client example (legacy)
+│   ├── reactClientProxy.tsx           # React client for OpenAI proxy
+│   ├── reactClientBlob.tsx            # NEW: React client for blob storage
+│   └── .env.example                   # NEW: Environment variable examples
 ├── scripts/
-│   └── deploy.ps1                   # Deployment script
-├── host.json                        # Azure Functions host configuration
-├── local.settings.json              # Local development settings
-├── package.json                     # Node.js dependencies
-└── tsconfig.json                    # TypeScript configuration
+│   └── deploy.ps1                     # Deployment script
+├── BLOB_STORAGE.md                    # NEW: Blob storage documentation
+├── DEPLOYMENT_GUIDE.md                # Deployment guide
+├── host.json                          # Azure Functions host configuration
+├── local.settings.json                # Local development settings
+├── package.json                       # Node.js dependencies
+└── tsconfig.json                      # TypeScript configuration
 ```
 
 ## Setup Instructions
