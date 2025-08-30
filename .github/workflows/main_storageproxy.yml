@@ -48,6 +48,7 @@ jobs:
       - name: Deploy to Azure Function App
         uses: Azure/functions-action@v1
         with:
-          app-name: 'StorageProxy'
+          app-name: 'storageproxy-c6g8bvbcdqc7duam'
           slot-name: 'Production'
           package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
+
