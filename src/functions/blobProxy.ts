@@ -14,12 +14,6 @@ const corsHeaders = {
     'Content-Type': 'application/json'
 };
 
-// Check if origin is allowed
-function isOriginAllowed(origin: string): boolean {
-    const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',') || ['http://localhost:3000'];
-    return allowedOrigins.some(allowedOrigin => allowedOrigin.trim() === origin);
-}
-
 // Get Blob Storage configuration from Azure Key Vault or environment
 async function getBlobStorageConfig(context: InvocationContext): Promise<BlobStorageConfig> {
     const logger = new Logger(context);
@@ -97,20 +91,6 @@ export async function blobProxy(request: HttpRequest, context: InvocationContext
     }
 
     try {
-        // Check origin for CORS
-        const origin = request.headers.get('origin') || '';
-        if (origin && !isOriginAllowed(origin)) {
-            logger.warn('Origin not allowed', { requestId, origin });
-            return {
-                status: 403,
-                headers: corsHeaders,
-                body: JSON.stringify({
-                    success: false,
-                    error: 'Origin not allowed'
-                } as ApiResponse)
-            };
-        }
-
         // Get blob storage configuration
         const config = await getBlobStorageConfig(context);
         const blobService = new BlobStorageService(config);
