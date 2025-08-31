@@ -28,7 +28,6 @@ export async function diagnostics(request: HttpRequest, context: InvocationConte
                 AZURE_OPENAI_API_KEY: process.env.AZURE_OPENAI_API_KEY ? 'SET' : 'NOT SET',
                 KEY_VAULT_URL: process.env.KEY_VAULT_URL ? 'SET' : 'NOT SET',
                 FUNCTIONS_WORKER_RUNTIME: process.env.FUNCTIONS_WORKER_RUNTIME || 'NOT SET',
-                ALLOWED_ORIGINS: process.env.ALLOWED_ORIGINS || 'NOT SET',
                 // Rate limiting configuration
                 RATE_LIMIT_GLOBAL_RPS: process.env.RATE_LIMIT_GLOBAL_RPS || '8 (default)',
                 RATE_LIMIT_USER_RPS: process.env.RATE_LIMIT_USER_RPS || '2 (default)',
