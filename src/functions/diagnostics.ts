@@ -9,6 +9,7 @@ export async function diagnostics(request: HttpRequest, context: InvocationConte
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods': 'GET, OPTIONS',
         'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+        'Access-Control-Allow-Credentials': 'true',
         'Content-Type': 'application/json'
     };
 

@@ -11,6 +11,7 @@ const corsHeaders = {
     'Access-Control-Allow-Origin': '*', // Will be configured based on environment
     'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization, x-user-id',
+    'Access-Control-Allow-Credentials': 'true',
     'Content-Type': 'application/json'
 };
 

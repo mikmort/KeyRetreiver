@@ -18,12 +18,17 @@ const corsHeaders = {
     'Access-Control-Allow-Origin': '*', // Will be configured based on environment
     'Access-Control-Allow-Methods': 'GET, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    'Access-Control-Allow-Credentials': 'true',
     'Content-Type': 'application/json'
 };
 
 // Check if origin is allowed
 function isOriginAllowed(origin: string): boolean {
-    const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',') || ['http://localhost:3000'];
+    const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',') || [
+        'https://gentle-moss-087d9321e.1.azurestaticapps.net',
+        'http://localhost:3000',
+        'https://localhost:3000'
+    ];
     return allowedOrigins.includes(origin);
 }
 
