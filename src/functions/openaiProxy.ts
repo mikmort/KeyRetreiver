@@ -20,11 +20,7 @@ const corsHeaders = {
 // Simple in-memory idempotency cache
 const idempotencyCache = new Map<string, { response: any; timestamp: number }>();
 
-// Check if origin is allowed
-function isOriginAllowed(origin: string): boolean {
-    const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',') || ['http://localhost:3000'];
-    return allowedOrigins.includes(origin);
-}
+
 
 // Get OpenAI configuration from Azure Key Vault or environment
 async function getOpenAIConfig(context: InvocationContext): Promise<OpenAIConfig> {
@@ -96,26 +92,6 @@ export async function openaiProxy(request: HttpRequest, context: InvocationConte
     }
 
     try {
-        // Check origin for CORS
-        const origin = request.headers.get('origin') || '';
-        if (origin && !isOriginAllowed(origin)) {
-            logger.warn('Origin not allowed', { requestId, origin });
-            return {
-                status: 403,
-                headers: corsHeaders,
-                body: JSON.stringify({
-                    success: false,
-                    error: 'Origin not allowed'
-                } as ApiResponse)
-            };
-        }
-
-        // Set the allowed origin in response headers
-        const responseHeaders = {
-            ...corsHeaders,
-            'Access-Control-Allow-Origin': origin || corsHeaders['Access-Control-Allow-Origin']
-        };
-
         // Extract user ID for rate limiting
         const userId = RequestValidator.extractUserId(request.headers);
 
@@ -124,7 +100,7 @@ export async function openaiProxy(request: HttpRequest, context: InvocationConte
             logger.warn('Global rate limit exceeded', { requestId, userId });
             return {
                 status: 429,
-                headers: { ...responseHeaders, 'Retry-After': '2' },
+                headers: { ...corsHeaders, 'Retry-After': '2' },
                 body: JSON.stringify({
                     success: false,
                     error: 'Global rate limit exceeded. Try again later.'
@@ -136,7 +112,7 @@ export async function openaiProxy(request: HttpRequest, context: InvocationConte
             logger.warn('User rate limit exceeded', { requestId, userId });
             return {
                 status: 429,
-                headers: { ...responseHeaders, 'Retry-After': '2' },
+                headers: { ...corsHeaders, 'Retry-After': '2' },
                 body: JSON.stringify({
                     success: false,
                     error: 'User rate limit exceeded. Try again later.'
@@ -151,7 +127,7 @@ export async function openaiProxy(request: HttpRequest, context: InvocationConte
             logger.warn('Empty request body', { requestId, userId });
             return {
                 status: 400,
-                headers: responseHeaders,
+                headers: corsHeaders,
                 body: JSON.stringify({
                     success: false,
                     error: 'Request body is required'
@@ -167,7 +143,7 @@ export async function openaiProxy(request: HttpRequest, context: InvocationConte
                 logger.info('Returning cached response', { requestId, userId, idempotencyKey });
                 return {
                     status: 200,
-                    headers: responseHeaders,
+                    headers: corsHeaders,
                     body: JSON.stringify(cached.response)
                 };
             }
@@ -179,7 +155,7 @@ export async function openaiProxy(request: HttpRequest, context: InvocationConte
             logger.warn('Missing deployment name', { requestId, userId });
             return {
                 status: 400,
-                headers: responseHeaders,
+                headers: corsHeaders,
                 body: JSON.stringify({
                     success: false,
                     error: 'Deployment name is required'
@@ -200,7 +176,7 @@ export async function openaiProxy(request: HttpRequest, context: InvocationConte
             });
             return {
                 status: 400,
-                headers: responseHeaders,
+                headers: corsHeaders,
                 body: JSON.stringify({
                     success: false,
                     error: validation.error
@@ -261,7 +237,7 @@ export async function openaiProxy(request: HttpRequest, context: InvocationConte
 
             return {
                 status: 200,
-                headers: responseHeaders,
+                headers: corsHeaders,
                 body: JSON.stringify(successResponse)
             };
 

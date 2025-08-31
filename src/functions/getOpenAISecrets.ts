@@ -21,11 +21,7 @@ const corsHeaders = {
     'Content-Type': 'application/json'
 };
 
-// Check if origin is allowed
-function isOriginAllowed(origin: string): boolean {
-    const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',') || ['http://localhost:3000'];
-    return allowedOrigins.includes(origin);
-}
+
 
 // Get secrets from Azure Key Vault
 async function getSecretsFromKeyVault(): Promise<OpenAIConfig> {
@@ -97,25 +93,6 @@ export async function getOpenAISecrets(request: HttpRequest, context: Invocation
     }
 
     try {
-        // Check origin for CORS
-        const origin = request.headers.get('origin') || '';
-        if (origin && !isOriginAllowed(origin)) {
-            return {
-                status: 403,
-                headers: corsHeaders,
-                body: JSON.stringify({
-                    success: false,
-                    error: 'Origin not allowed'
-                } as ApiResponse)
-            };
-        }
-
-        // Set the allowed origin in response headers
-        const responseHeaders = {
-            ...corsHeaders,
-            'Access-Control-Allow-Origin': origin || corsHeaders['Access-Control-Allow-Origin']
-        };
-
         let config: OpenAIConfig;
 
         // Try to get secrets from Key Vault first, fallback to environment variables
@@ -130,7 +107,7 @@ export async function getOpenAISecrets(request: HttpRequest, context: Invocation
 
         return {
             status: 200,
-            headers: responseHeaders,
+            headers: corsHeaders,
             body: JSON.stringify({
                 success: true,
                 data: config
