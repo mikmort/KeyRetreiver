@@ -93,7 +93,6 @@ AZURE_STORAGE_ACCOUNT_NAME = yourstorageaccount
 ### Additional Settings
 ```
 AZURE_BLOB_CONTAINER_NAME = documents  # Default container name
-ALLOWED_ORIGINS = http://localhost:3000,https://your-react-app.com  # CORS origins
 ```
 
 ### Key Vault Integration (Production)
@@ -251,7 +250,6 @@ The proxy logs structured information for monitoring:
 ```
 AZURE_STORAGE_CONNECTION_STRING = your-connection-string
 AZURE_BLOB_CONTAINER_NAME = documents
-ALLOWED_ORIGINS = https://your-react-app.com
 ```
 
 2. **Enable Managed Identity** (for production with managed identity):

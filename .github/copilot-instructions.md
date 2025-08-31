@@ -20,7 +20,6 @@ npm run build
 # First, set environment variables for testing:
 export AZURE_OPENAI_ENDPOINT="https://test-openai-instance.openai.azure.com/"
 export AZURE_OPENAI_API_KEY="test-api-key-for-development"
-export ALLOWED_ORIGINS="http://localhost:3000,https://localhost:3001"
 
 # Test main function
 node -e "
@@ -62,8 +61,7 @@ diagnostics(mockRequest, mockContext).then(result => {
        "AzureWebJobsStorage": "UseDevelopmentStorage=true",
        "FUNCTIONS_WORKER_RUNTIME": "node",
        "AZURE_OPENAI_ENDPOINT": "https://your-openai-instance.openai.azure.com/",
-       "AZURE_OPENAI_API_KEY": "your-api-key-for-development",
-       "ALLOWED_ORIGINS": "http://localhost:3000,https://your-react-app.com"
+       "AZURE_OPENAI_API_KEY": "your-api-key-for-development"
      }
    }
    ```
@@ -135,8 +133,7 @@ Returns environment diagnostic information.
       "AZURE_OPENAI_ENDPOINT": "SET",
       "AZURE_OPENAI_API_KEY": "SET",
       "KEY_VAULT_URL": "NOT SET",
-      "FUNCTIONS_WORKER_RUNTIME": "node",
-      "ALLOWED_ORIGINS": "http://localhost:3000,https://localhost:3001"
+      "FUNCTIONS_WORKER_RUNTIME": "node"
     },
     "nodeVersion": "v20.19.4",
     "platform": "linux"
@@ -158,7 +155,6 @@ After making changes, always run these validation steps:
    # Test main function with environment variables
    export AZURE_OPENAI_ENDPOINT="https://test.openai.azure.com/"
    export AZURE_OPENAI_API_KEY="test-key"
-   export ALLOWED_ORIGINS="http://localhost:3000"
    
    # Run the programmatic tests shown in the bootstrap section
    ```
@@ -226,7 +222,6 @@ KeyRetriever/
 
 ### Environment Configuration Issues
 - **"Failed to retrieve OpenAI configuration"**: Check that `AZURE_OPENAI_ENDPOINT` and `AZURE_OPENAI_API_KEY` are set
-- **CORS errors**: Verify the requesting origin is in `ALLOWED_ORIGINS`
 - **Key Vault access denied**: In production, ensure Function App's managed identity has Key Vault Get permissions
 
 ### Deployment Issues
@@ -240,7 +235,6 @@ KeyRetriever/
 - `AZURE_OPENAI_API_KEY` - Your Azure OpenAI API key
 
 ### Optional Configuration
-- `ALLOWED_ORIGINS` - Comma-separated CORS origins (default: "http://localhost:3000")
 - `KEY_VAULT_URL` - Azure Key Vault URL for production
 - `AZURE_OPENAI_API_KEY_SECRET_NAME` - Key Vault secret name (default: "azure-openai-api-key")
 

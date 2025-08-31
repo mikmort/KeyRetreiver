@@ -178,7 +178,6 @@ The proxy uses comprehensive configuration options for resilience and performanc
 - `AZURE_OPENAI_API_KEY`: API key (for development)
 - `KEY_VAULT_URL`: Azure Key Vault URL (for production)
 - `AZURE_OPENAI_API_KEY_SECRET_NAME`: Secret name in Key Vault (default: "azure-openai-api-key")
-- `ALLOWED_ORIGINS`: Comma-separated list of allowed origins for CORS
 
 #### Rate Limiting Configuration
 - `RATE_LIMIT_GLOBAL_RPS`: Global requests per second limit (default: 8)
@@ -363,7 +362,7 @@ For production testing:
 
 1. **"Deployment name is required"**: Make sure to include the `deployment` field in your request body
 2. **Rate limit exceeded**: Check your request frequency and consider implementing client-side rate limiting
-3. **CORS errors**: Verify your origin is in the `ALLOWED_ORIGINS` environment variable
+3. **CORS errors**: Configure CORS settings in the Azure Function App portal under API → CORS
 4. **OpenAI API errors**: Check your Azure OpenAI endpoint and API key configuration
 5. **Key Vault access**: Ensure the Function App's managed identity has access to Key Vault secrets
 6. **Upstream throttling**: Azure OpenAI quota exceeded - requests will retry automatically with backoff

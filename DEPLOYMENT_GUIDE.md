@@ -19,7 +19,6 @@ FUNCTIONS_WORKER_RUNTIME = node
 WEBSITE_NODE_DEFAULT_VERSION = ~18
 AZURE_OPENAI_ENDPOINT = https://your-openai-instance.openai.azure.com/
 AZURE_OPENAI_API_KEY = your-actual-api-key
-ALLOWED_ORIGINS = http://localhost:3000,https://your-react-app-domain.com
 ```
 
 ### Optional Settings (for Key Vault - Production):
@@ -98,7 +97,7 @@ This error means the function can't access the required environment variables. F
 
 ### Other Common Issues:
 
-1. **CORS Issues**: Make sure your React app's domain is in the ALLOWED_ORIGINS setting
+1. **CORS Issues**: Configure CORS settings in the Azure Function App portal under API → CORS
 2. **404 Errors**: Ensure the GitHub Actions deployment completed successfully
 3. **Authentication Errors**: Check that your Azure OpenAI endpoint and API key are correct
 4. **Key Vault Issues**: Verify the managed identity has proper permissions

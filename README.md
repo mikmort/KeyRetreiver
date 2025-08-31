@@ -243,9 +243,6 @@ function MyComponent() {
 - `AZURE_OPENAI_ENDPOINT`: Your Azure OpenAI endpoint  
 - `AZURE_OPENAI_API_KEY`: Your Azure OpenAI API key
 
-### Optional
-- `ALLOWED_ORIGINS`: Comma-separated list of allowed origins for CORS (default: "http://localhost:3000")
-
 **Note**: Both the proxy and legacy endpoints use the same configuration.
 
 ## Why Use the Proxy?
