@@ -94,15 +94,47 @@ export async function getOpenAISecrets(request: HttpRequest, context: Invocation
 
     try {
         let config: OpenAIConfig;
+        let keyVaultError: any = null;
 
         // Try to get secrets from Key Vault first, fallback to environment variables
         try {
             config = await getSecretsFromKeyVault();
             context.log('Successfully retrieved secrets from Key Vault');
-        } catch (keyVaultError: any) {
-            context.log('Key Vault retrieval failed, falling back to environment variables:', keyVaultError.message);
-            config = getSecretsFromEnvironment();
-            context.log('Successfully retrieved secrets from environment variables');
+        } catch (kvError: any) {
+            keyVaultError = kvError;
+            context.log('Key Vault retrieval failed, falling back to environment variables:', kvError.message);
+            
+            try {
+                config = getSecretsFromEnvironment();
+                context.log('Successfully retrieved secrets from environment variables');
+            } catch (envError: any) {
+                context.log('Environment variable fallback also failed:', envError.message);
+                
+                // Provide specific error message based on the failure scenarios
+                let errorMessage = 'Failed to retrieve OpenAI configuration. ';
+                let troubleshootingTip = '';
+                
+                if (process.env.KEY_VAULT_URL) {
+                    // Key Vault was attempted but failed, and env vars are also missing
+                    errorMessage += 'Key Vault access failed and environment variables are not configured. ';
+                    troubleshootingTip = 'Check: 1) Function App managed identity has Key Vault access, or 2) Set AZURE_OPENAI_ENDPOINT and AZURE_OPENAI_API_KEY in Function App configuration.';
+                } else {
+                    // No Key Vault configured, only env vars were attempted
+                    errorMessage += 'Required environment variables are missing. ';
+                    troubleshootingTip = 'Set AZURE_OPENAI_ENDPOINT and AZURE_OPENAI_API_KEY in the Function App configuration, or configure Key Vault with KEY_VAULT_URL.';
+                }
+                
+                context.log(`Detailed error - Key Vault error: ${keyVaultError?.message || 'Not attempted'}, Environment error: ${envError.message}`);
+                
+                return {
+                    status: 500,
+                    headers: corsHeaders,
+                    body: JSON.stringify({
+                        success: false,
+                        error: errorMessage + troubleshootingTip
+                    } as ApiResponse)
+                };
+            }
         }
 
         return {
@@ -115,14 +147,14 @@ export async function getOpenAISecrets(request: HttpRequest, context: Invocation
         };
 
     } catch (error: any) {
-        context.log('Error retrieving OpenAI configuration:', error);
+        context.log('Unexpected error retrieving OpenAI configuration:', error);
         
         return {
             status: 500,
             headers: corsHeaders,
             body: JSON.stringify({
                 success: false,
-                error: 'Failed to retrieve OpenAI configuration'
+                error: 'Internal server error occurred while retrieving OpenAI configuration'
             } as ApiResponse)
         };
     }
