@@ -18,9 +18,9 @@ const corsHeaders = {
     'Access-Control-Allow-Origin': '*', // Will be configured based on environment
     'Access-Control-Allow-Methods': 'GET, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    'Access-Control-Allow-Credentials': 'true',
     'Content-Type': 'application/json'
 };
-
 
 
 // Get secrets from Azure Key Vault

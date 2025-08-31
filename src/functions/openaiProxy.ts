@@ -14,13 +14,12 @@ const corsHeaders = {
     'Access-Control-Allow-Origin': '*', // Will be configured based on environment
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization, x-user-id',
+    'Access-Control-Allow-Credentials': 'true',
     'Content-Type': 'application/json'
 };
 
 // Simple in-memory idempotency cache
 const idempotencyCache = new Map<string, { response: any; timestamp: number }>();
-
-
 
 // Get OpenAI configuration from Azure Key Vault or environment
 async function getOpenAIConfig(context: InvocationContext): Promise<OpenAIConfig> {
