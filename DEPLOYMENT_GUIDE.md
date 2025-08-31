@@ -77,7 +77,13 @@ const { config, loading, error } = useOpenAIConfig();
 
 ### Error: "Failed to retrieve OpenAI configuration"
 
-This error means the function can't access the required environment variables. Follow these steps:
+This error indicates configuration issues. The improved error messages now provide specific guidance:
+
+**"Required environment variables are missing"**: Environment variables are not set in the Function App.
+
+**"Key Vault access failed and environment variables are not configured"**: Both Key Vault and environment variable access failed.
+
+Follow these steps to resolve:
 
 1. **Check Environment Variables**: Visit the diagnostics endpoint to see what's configured:
    ```
