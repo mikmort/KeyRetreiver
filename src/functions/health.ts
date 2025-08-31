@@ -7,6 +7,7 @@ export async function health(request: HttpRequest, context: InvocationContext): 
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods': 'GET, OPTIONS',
         'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+        'Access-Control-Allow-Credentials': 'true',
         'Content-Type': 'application/json'
     };
 
